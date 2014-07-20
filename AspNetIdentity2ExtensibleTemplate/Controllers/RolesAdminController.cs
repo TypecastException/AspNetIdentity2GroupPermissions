@@ -98,7 +98,7 @@ namespace IdentitySample.Controllers
         {
             if (ModelState.IsValid)
             {
-                var role = new IdentityRole(roleViewModel.Name);
+                var role = new ApplicationRole(roleViewModel.Name);
                 var roleresult = await RoleManager.CreateAsync(role);
                 if (!roleresult.Succeeded)
                 {
