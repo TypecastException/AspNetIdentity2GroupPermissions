@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetIdentity2ExtensibleTemplate", "AspNetIdentity2ExtensibleTemplate\AspNetIdentity2ExtensibleTemplate.csproj", "{90053234-F75B-4623-8D24-DCBE76917590}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetIdentity2GroupPermissions", "AspNetIdentity2GroupPermissions\AspNetIdentity2GroupPermissions.csproj", "{90053234-F75B-4623-8D24-DCBE76917590}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
