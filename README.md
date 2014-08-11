@@ -1,12 +1,13 @@
-AspNet Identity 2.0 Extensible Project Template
-===============================================
-This project expands upon the work done by the ASP.NET Identity Team in the Identity Samples project. The goal is to provide a basic project template wherein the core identity Model classes are easily extensible without messing about with the generic type arguments.
+AspNet Identity 2.0 with Group-Based Permissions Management
+===========================================================
+This project expands upon the work done by the ASP.NET Identity Team in the Identity Samples project. The goal is to extend the ASP.NET MVC 5 Identity system and implement a Group-based permission scheme. Users belong to Groups, and Groups have sets of authorization permissions to exxecute code within the application (using [Authorize]). The article can be found at [ASP.NET Identity 2.0: Implementing Group-Based Permissions Management](http://typecastexception.com/post/2014/08/10/ASPNET-Identity-20-Implementing-Group-Based-Permissions-Management.aspx)
 
-While extending the basic `ApplicationUser` class provided in the original Identity Samples project was always relatively straightforward, Extending the Role implementation required some significant work. 
 
-In this project, you can simply add additional properties and/or methods to any of the Identity Model classes as defined in the IdentityModels.cs file. 
+In this project, we make extensive addtions to the original Identity Samples project. We start with the easily extensible project template found at [AspNet Identity 2.0 Extensible Project Template](https://github.com/TypecastException/AspNet-Identity-2-Extensible-Project-Template) and add the capability to organize granular Role permissions into Groups, to which Users can then be assigned. 
 
-For more information, see:
+There is a lot of room for improvment in this project. Particularly with respect to the design of Views and presentation. Do feel free to add to the issues list and/or hit me with a Pull Request if you have ideas or some code to add. 
+
+For more information on ASP.NET Identity, see:
 
 * [ASP.NET MVC and Identity 2.0: Understanding the Basics](http://typecastexception.com/post/2014/04/20/ASPNET-MVC-and-Identity-20-Understanding-the-Basics.aspx)
 
