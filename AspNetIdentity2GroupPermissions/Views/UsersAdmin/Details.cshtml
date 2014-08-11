@@ -18,16 +18,16 @@
         </dd>
     </dl>
 </div>
-<h4>List of roles for this user</h4>
-@if (ViewBag.RoleNames.Count == 0)
+<h4>List ofGroups this user belongs to:</h4>
+@if (ViewBag.GroupNames.Count == 0)
 {
     <hr />
-    <p>No roles found for this user.</p>
+    <p>No GRoups found for this user.</p>
 }
 
 <table class="table">
 
-    @foreach (var item in ViewBag.RoleNames)
+    @foreach (var item in ViewBag.GroupNames)
     {
         <tr>
             <td>

@@ -24,12 +24,14 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.Label("Roles", new { @class = "control-label col-md-2" })
+            @Html.Label("This User belongs to the following Groups", new { @class = "control-label col-md-2" })
             <span class=" col-md-10">
-                @foreach (var item in Model.RolesList)
+                @foreach (var item in Model.GroupsList)
                 {
-                    <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                    @Html.Label(item.Value, new { @class = "control-label" })
+                    <div>
+                        <input type="checkbox" name="selectedGroups" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                        @Html.Label(item.Text, new { @class = "control-label" })
+                    </div>
                 }
             </span>
         </div>

@@ -31,13 +31,15 @@
     </div>
     <div class="form-group">
         <label class="col-md-2 control-label">
-            Select User Role
+            Select User Group
         </label>
         <div class="col-md-10">
-            @foreach (var item in (SelectList)ViewBag.RoleId)
+            @foreach (var item in (SelectList)ViewBag.GroupsList)
             {
-                <input type="checkbox" name="SelectedRoles" value="@item.Value" class="checkbox-inline" />
-                @Html.Label(item.Value, new { @class = "control-label" })
+                <div>
+                    <input type="checkbox" name="selectedGroups" value="@item.Value" class="checkbox-inline" />
+                    @Html.Label(item.Text, new { @class = "control-label" })
+                </div>
             }
         </div>
     </div>

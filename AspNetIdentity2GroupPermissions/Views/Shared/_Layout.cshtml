@@ -28,6 +28,7 @@
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
                         <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
                         <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
+                        <li>@Html.ActionLink("GroupsAdmin", "Index", "GroupsAdmin")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System;
-
+using System.Collections.Generic;
 namespace IdentitySample.Models
 {
     // You will not likely need to customize there, but it is necessary/easier to create our own 
@@ -56,8 +56,8 @@ namespace IdentitySample.Models
 
 
     // Must be expressed in terms of our custom types:
-    public class ApplicationDbContext 
-        : IdentityDbContext<ApplicationUser, ApplicationRole, 
+    public class ApplicationDbContext
+        : IdentityDbContext<ApplicationUser, ApplicationRole,
         string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
     {
         public ApplicationDbContext()
@@ -75,8 +75,38 @@ namespace IdentitySample.Models
             return new ApplicationDbContext();
         }
 
-        // Add additional items here as needed
+        // Add the ApplicationGroups property:
+        public virtual IDbSet<ApplicationGroup> ApplicationGroups { get; set; }
+
+        // Override OnModelsCreating:
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ApplicationGroup>()
+                .HasMany<ApplicationUserGroup>((ApplicationGroup g) => g.ApplicationUsers)
+                .WithRequired().HasForeignKey<string>((ApplicationUserGroup ag) => ag.ApplicationGroupId);
+            modelBuilder.Entity<ApplicationUserGroup>()
+                .HasKey((ApplicationUserGroup r) => 
+                    new 
+                    { 
+                        ApplicationUserId = r.ApplicationUserId, 
+                        ApplicationGroupId = r.ApplicationGroupId 
+                    }).ToTable("ApplicationUserGroups");
+
+            modelBuilder.Entity<ApplicationGroup>()
+                .HasMany<ApplicationGroupRole>((ApplicationGroup g) => g.ApplicationRoles)
+                .WithRequired().HasForeignKey<string>((ApplicationGroupRole ap) => ap.ApplicationGroupId);
+            modelBuilder.Entity<ApplicationGroupRole>().HasKey((ApplicationGroupRole gr) => 
+                new 
+                { 
+                    ApplicationRoleId = gr.ApplicationRoleId, 
+                    ApplicationGroupId = gr.ApplicationGroupId 
+                }).ToTable("ApplicationGroupRoles");
+
+        }
     }
+
 
     // Most likely won't need to customize these either, but they were needed because we implemented
     // custom versions of all the other types:
@@ -114,6 +144,49 @@ namespace IdentitySample.Models
             : base(context)
         {
         }
+    }
+
+
+    public class ApplicationGroup
+    {
+        public ApplicationGroup()
+        {
+            this.Id = Guid.NewGuid().ToString();
+            this.ApplicationRoles = new List<ApplicationGroupRole>();
+            this.ApplicationUsers = new List<ApplicationUserGroup>();
+        }
+
+        public ApplicationGroup(string name)
+            : this()
+        {
+            this.Name = name;
+        }
+
+        public ApplicationGroup(string name, string description)
+            : this(name)
+        {
+            this.Description = description;
+        }
+
+        [Key]
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public virtual ICollection<ApplicationGroupRole> ApplicationRoles { get; set; }
+        public virtual ICollection<ApplicationUserGroup> ApplicationUsers { get; set; }
+    }
+
+
+    public class ApplicationUserGroup
+    {
+        public string ApplicationUserId { get; set; }
+        public string ApplicationGroupId { get; set; }
+    }
+
+    public class ApplicationGroupRole
+    {
+        public string ApplicationGroupId { get; set; }
+        public string ApplicationRoleId { get; set; }
     }
 
 }
