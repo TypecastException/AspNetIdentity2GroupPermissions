@@ -1,0 +1,33 @@
+﻿@model IEnumerable<IdentitySample.Models.ApplicationActionPermission>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>Controller Name</th>
+        <th>No. of actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.ActionName
+            </td>
+            <td>
+                @Model.Count(x => x.ControllerName == item.ControllerName)
+            </td>
+            <td>
+
+                @Html.ActionLink("Details", "Details", new { controllerName = item.ControllerName })
+            </td>
+        </tr>
+    }
+</table>
