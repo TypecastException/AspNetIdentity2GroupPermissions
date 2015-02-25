@@ -63,6 +63,7 @@ namespace IdentitySample.Controllers
             return View(applicationgroup);
         }
 
+        [ActionAuthorize]
         public async Task<ActionResult> Delete(int id)
         {
             if (id <= 0)
@@ -124,7 +125,7 @@ namespace IdentitySample.Controllers
                 };
                 model.RolesList.Add(listItem);
             }
-            return View(applicationpermissions);
+            return View(model);
         }
 
         [HttpPost]
@@ -145,15 +146,16 @@ namespace IdentitySample.Controllers
 
                 selectedRoles = selectedRoles ?? new string[] { };
                 await this.ActionPermissionManager.AddPermissionRolesAsync(permission.Id, selectedRoles);
-                return RedirectToAction("Index");
+                return RedirectToAction("Permissions", new { id = permission.Id });
             }
             return View(model);
         }
 
         // GET: ActionPermission
+
         public ActionResult Index()
         {
-            return View(ActionPermissionManager.ActionPermissions);
+            return View(ActionPermissionManager.ActionPermissions.ToList());
         }
 
         public async Task<ActionResult> Permissions(int id)
@@ -162,16 +164,17 @@ namespace IdentitySample.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var applicationpermissions =
+            var applicationpermission =
                 await this.ActionPermissionManager.GetByIdAsync(id);
-            if (applicationpermissions == null)
+            if (applicationpermission == null)
             {
                 return HttpNotFound();
             }
             var groupRoles = this.ActionPermissionManager.GetControllerActionRoles(id);
             string[] RoleNames = groupRoles.Select(p => p.Name).ToArray();
             ViewBag.RolesList = RoleNames;
-            return View(applicationpermissions);
+
+            return View(applicationpermission);
         }
     }
 }

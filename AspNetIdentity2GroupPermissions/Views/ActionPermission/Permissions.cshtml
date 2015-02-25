@@ -9,18 +9,32 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ActionName)
-        </th>
-        <th>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
             @Html.DisplayNameFor(model => model.ControllerName)
-        </th>
-        <th></th>
-    </tr>
-</table>
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.ControllerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActionName)
+        </dd>
+    </dl>
+</div>
+<h4>List of permissions granted this action</h4>
+@if (Model.Roles.Count == 0)
+{
+    <hr />
+    <p>No permissions found .</p>
+}
 <table class="table">
 
     @foreach (var item in ViewBag.RolesList)
@@ -33,6 +47,6 @@
     }
 </table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
     @Html.ActionLink("Back to List", "Index")
 </p>

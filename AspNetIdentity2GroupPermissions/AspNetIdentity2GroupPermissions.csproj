@@ -147,6 +147,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\loader.css" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
@@ -161,6 +162,7 @@
     <Content Include="Views\ActionPermission\Details.cshtml" />
     <Content Include="Views\ActionPermission\Permissions.cshtml" />
     <Content Include="Views\ActionPermission\Edit.cshtml" />
+    <Content Include="Views\Account\Loading.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -248,12 +250,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201502241511129_InitialCreate.cs" />
-    <Compile Include="Migrations\201502241511129_InitialCreate.Designer.cs">
-      <DependentUpon>201502241511129_InitialCreate.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ActionAuthorize.cs" />
     <Compile Include="Models\ActionPermissionManager.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ApplicationActionPermission.cs" />
@@ -266,11 +265,6 @@
     <Compile Include="Models\ActionPermissionsStoreBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201502241511129_InitialCreate.resx">
-      <DependentUpon>201502241511129_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

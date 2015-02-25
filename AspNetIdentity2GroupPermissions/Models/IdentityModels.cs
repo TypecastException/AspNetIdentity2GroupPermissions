@@ -16,7 +16,7 @@ namespace IdentitySample.Models
     {
         static ApplicationDbContext()
         {
-            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
+            //Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
         }
 
         public ApplicationDbContext()
@@ -24,7 +24,9 @@ namespace IdentitySample.Models
         {
         }
 
-        public virtual IDbSet<ApplicationActionPermission> ActionPermissions { get; set; }
+        public virtual IDbSet<ApplicationActionPermissionRole> ApplicationActionPermissionRoles { get; set; }
+
+        public virtual IDbSet<ApplicationActionPermission> ApplicationActionPermissions { get; set; }
 
         // Add the ApplicationGroups property:
         public virtual IDbSet<ApplicationGroup> ApplicationGroups { get; set; }

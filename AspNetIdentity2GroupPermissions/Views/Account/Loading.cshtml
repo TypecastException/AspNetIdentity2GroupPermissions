@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Loading";
+    @* Html.Action("LoadAppData");*@
+}
+
+<h2>Application Loading</h2>
+<div>
+    Welcome @User.Identity.Name , please wait while we setup the application.
+</div>
+<div class="loading">Loading&#8230;</div>
+@section scripts{
+
+    <script type="text/javascript">
+        $(function () {
+            var url = '@Url.Action("LoadAppData")';
+            $.ajax({
+                type: "POST", // see http://haacked.com/archive/2009/06/24/json-hijacking.aspx
+                url: url,
+                data: {}, //to send data see more at http://bit.ly/mvc_ajax_jquery
+                datatype: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (returndata) {
+                    if (returndata.ok)
+                        window.location = returndata.newurl;
+                    else
+                        window.alert(returndata.message);
+
+                }
+            }
+        );
+        });
+    </script>
+}
