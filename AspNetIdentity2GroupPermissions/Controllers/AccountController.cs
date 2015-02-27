@@ -225,21 +225,6 @@ namespace IdentitySample.Controllers
             return View();
         }
 
-        [HttpPost]
-        public JsonResult LoadAppData()
-        {
-            var actionPermissions = _permissionManager.GetControllerActionRoles().Select(x => x.Name).ToList();
-
-            WebCache.Set(IdentitySample.Models.Constants.actionsKey, actionPermissions);
-            Thread.Sleep(1000 * 10);
-            return Json(new { ok = true, newurl = Url.Action("Index", "Home") }); ;
-        }
-
-        public ActionResult Loading()
-        {
-            return View();
-        }
-
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -267,9 +252,7 @@ namespace IdentitySample.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    if (!string.IsNullOrEmpty(returnUrl))
-                        WebCache.Set(model.Email + "-url", returnUrl);
-                    return RedirectToAction("Loading");
+                    return RedirectToLocal(returnUrl);
 
                 case SignInStatus.LockedOut:
                     return View("Lockout");

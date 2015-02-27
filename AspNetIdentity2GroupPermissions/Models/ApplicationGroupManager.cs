@@ -216,6 +216,14 @@ namespace IdentitySample.Models
             return await userGroups;
         }
 
+        public bool UserHasAdministratorAccess(string userId)
+        {
+            return
+                (from g in Groups
+                 where g.ApplicationUsers.Any(u => u.ApplicationUserId == userId)
+                 select g).Any(x => x.IsAdmin);
+        }
+
         public IdentityResult RefreshUserGroupRoles(string userId)
         {
             var user = _userManager.FindById(userId);

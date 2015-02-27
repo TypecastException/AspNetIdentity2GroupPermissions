@@ -2,9 +2,11 @@
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 
 namespace IdentitySample.Models
 {
@@ -15,7 +17,9 @@ namespace IdentitySample.Models
         private ApplicationDbContext _db;
 
         private bool _disposed;
-        private ApplicationRoleManager _roleManager;
+        private readonly ApplicationRoleManager _roleManager;
+
+        private readonly ApplicationUserManager _userManager;
 
         public ActionPermissionManager()
         {
@@ -24,6 +28,7 @@ namespace IdentitySample.Models
             _roleManager = HttpContext.Current
                .GetOwinContext().Get<ApplicationRoleManager>();
             _actionPermissionStore = new ActionPermissionsStoreBase(_db);
+            _userManager = new ApplicationUserManager(new ApplicationUserStore(_db));
         }
 
         public IQueryable<ApplicationActionPermission> ActionPermissions
@@ -55,7 +60,8 @@ namespace IdentitySample.Models
                 _db.ApplicationActionPermissionRoles.Add(new ApplicationActionPermissionRole { ActionPermissionId = actionId, RoleId = role.Id });
             }
             _db.SaveChanges();
-
+            var key = string.Format("{0}/{1}", actionPermission.ControllerName, actionPermission.ActionName);
+            WebCache.Remove(key);
             return IdentityResult.Success;
         }
 
@@ -72,7 +78,8 @@ namespace IdentitySample.Models
                 _db.ApplicationActionPermissionRoles.Add(new ApplicationActionPermissionRole { ActionPermissionId = actionId, RoleId = role.Id });
             }
             await _db.SaveChangesAsync();
-
+            var key = string.Format("{0}/{1}", actionPermission.ControllerName, actionPermission.ActionName);
+            WebCache.Remove(key);
             return IdentityResult.Success;
         }
 
@@ -184,6 +191,36 @@ namespace IdentitySample.Models
 
             await _actionPermissionStore.UpdateAsync(permission);
             return true;
+        }
+
+        public IEnumerable<ApplicationRole> GetActionRoles(string controller, string action)
+        {
+            //Check from the cache 1st
+            var key = string.Format("{0}/{1}", controller, action);
+            var roles = WebCache.Get(key) as List<ApplicationRole>;
+            if (roles != null)
+                return roles;
+
+            var perm =
+                 _db.ApplicationActionPermissions.FirstOrDefault(a => a.ActionName == action & a.ControllerName == controller);
+
+            if (perm == null) return new List<ApplicationRole>();
+            roles = GetControllerActionRoles(perm.Id).ToList();
+            WebCache.Set(key, roles);
+            return roles;
+        }
+
+        public bool HasPermission(string controller, string action, string userId)
+        {
+            var key = string.Format("{0}/{1}/{2}", controller, action, userId);
+            var userRoles = WebCache.Get(key) as IList<string>;
+            if (userRoles == null)
+            {
+                userRoles = _userManager.GetRolesAsync(userId).Result;
+                WebCache.Set(key, userRoles);
+            }
+            var requiredRoles = GetActionRoles(controller, action);
+            return requiredRoles.Any(x => userRoles.Contains(x.Name));
         }
 
         protected virtual void Dispose(bool disposing)

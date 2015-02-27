@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IdentitySample.Models.ApplicationActionPermission>
+﻿@model IEnumerable<IdentitySample.Models.ActionViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -19,14 +19,14 @@
     {
         <tr>
             <td>
-                @item.ControllerName
+                @item.Controller
             </td>
             <td>
-                @Model.Count(x => x.ControllerName == item.ControllerName)
+                @item.Actions
             </td>
             <td>
 
-                @Html.ActionLink("Details", "Details", new { controllerName = item.ControllerName })
+                @Html.ActionLink("Details", "Details", new { controllerName = item.Controller })
             </td>
         </tr>
     }

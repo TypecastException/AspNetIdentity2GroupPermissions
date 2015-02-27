@@ -42,6 +42,8 @@ namespace IdentitySample.Models
         [Required(AllowEmptyStrings = false)]
         public string Name { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         public ICollection<SelectListItem> RolesList { get; set; }
 
         public ICollection<SelectListItem> UsersList { get; set; }
@@ -73,5 +75,14 @@ namespace IdentitySample.Models
         [Required(AllowEmptyStrings = false)]
         [Display(Name = "RoleName")]
         public string Name { get; set; }
+    }
+
+    public class ActionViewModel
+    {
+        public int Id { get; set; }
+
+        public string Controller { get; set; }
+
+        public int Actions { get; set; }
     }
 }

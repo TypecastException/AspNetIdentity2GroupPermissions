@@ -39,7 +39,7 @@ namespace IdentitySample.Migrations
             }
 
             var groupManager = new ApplicationGroupManager(context, userManager, roleManager);
-            var newGroup = new ApplicationGroup("SuperAdmins", "Full Access to All");
+            var newGroup = new ApplicationGroup("SuperAdmins", "Full Access to All") { IsAdmin = true };
 
             groupManager.CreateGroup(newGroup);
             groupManager.SetUserGroups(user.Id, new string[] { newGroup.Id });

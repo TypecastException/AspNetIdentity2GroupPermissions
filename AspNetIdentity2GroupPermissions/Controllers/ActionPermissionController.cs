@@ -1,7 +1,5 @@
 ﻿using IdentitySample.Models;
 using Microsoft.AspNet.Identity.Owin;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -53,6 +51,7 @@ namespace IdentitySample.Controllers
         {
             if (ModelState.IsValid)
             {
+                selectedRoles = selectedRoles ?? new string[] { };
                 var result = await ActionPermissionManager.CreateActionPermissionAsync(applicationgroup);
                 if (result)
                     await ActionPermissionManager.AddPermissionRolesAsync(applicationgroup.Id, selectedRoles);
@@ -63,7 +62,7 @@ namespace IdentitySample.Controllers
             return View(applicationgroup);
         }
 
-        [ActionAuthorize]
+        [PermissionFilter]
         public async Task<ActionResult> Delete(int id)
         {
             if (id <= 0)
@@ -155,7 +154,10 @@ namespace IdentitySample.Controllers
 
         public ActionResult Index()
         {
-            return View(ActionPermissionManager.ActionPermissions.ToList());
+            var model =
+                ActionPermissionManager.ActionPermissions.GroupBy(a => a.ControllerName).Select(g => new ActionViewModel { Actions = g.Count(), Controller = g.Key }).ToList();
+
+            return View(model);
         }
 
         public async Task<ActionResult> Permissions(int id)
