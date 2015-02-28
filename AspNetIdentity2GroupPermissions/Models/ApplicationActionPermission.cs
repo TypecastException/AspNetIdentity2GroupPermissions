@@ -19,7 +19,7 @@ namespace IdentitySample.Models
         {
             this.ActionName = actionName;
             this.ControllerName = controllerName;
-            this.Roles = new Collection<ApplicationActionPermissionRole>();
+            this.Roles = new Collection<ApplicationRole>();
         }
 
         public virtual string ActionName { get; set; }
@@ -30,6 +30,6 @@ namespace IdentitySample.Models
         [Required]
         public virtual int Id { get; set; }
 
-        public virtual ICollection<ApplicationActionPermissionRole> Roles { get; set; }
+        public virtual ICollection<ApplicationRole> Roles { get; set; }
     }
 }

@@ -4,7 +4,7 @@ namespace IdentitySample.Migrations
     using Microsoft.AspNet.Identity;
     using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<IdentitySample.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
@@ -12,9 +12,9 @@ namespace IdentitySample.Migrations
             ContextKey = "IdentitySample.Models.ApplicationDbContext";
         }
 
-        protected override void Seed(IdentitySample.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
-            context.ApplicationActionPermissions.AddOrUpdate<ApplicationActionPermission>(new ApplicationActionPermission { ActionName = "Create", ControllerName = "ActionPermissionController", Id = 1 });
+            context.ApplicationActionPermissions.AddOrUpdate(new ApplicationActionPermission { ActionName = "Create", ControllerName = "ActionPermissionController", Id = 1 });
             var roleManager = new ApplicationRoleManager(new ApplicationRoleStore(context));
             var userManager = new ApplicationUserManager(new ApplicationUserStore(context));
 
@@ -44,8 +44,6 @@ namespace IdentitySample.Migrations
             groupManager.CreateGroup(newGroup);
             groupManager.SetUserGroups(user.Id, new string[] { newGroup.Id });
             groupManager.SetGroupRoles(newGroup.Id, new string[] { role.Name });
-
-            context.ApplicationActionPermissionRoles.AddOrUpdate<ApplicationActionPermissionRole>(new ApplicationActionPermissionRole { ActionPermissionId = 1, RoleId = role.Id });
         }
     }
 }

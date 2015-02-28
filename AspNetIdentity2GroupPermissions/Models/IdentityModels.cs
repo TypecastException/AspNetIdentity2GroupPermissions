@@ -41,8 +41,8 @@ namespace IdentitySample.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ApplicationActionPermission>().HasMany<ApplicationActionPermissionRole>(x => x.Roles);
-            modelBuilder.Entity<ApplicationActionPermissionRole>().HasKey(x => new { RoleId = x.RoleId, ActionPermissionId = x.ActionPermissionId }).ToTable("ApplicationPermissionRoles");
+            modelBuilder.Entity<ApplicationActionPermission>().HasMany<ApplicationRole>(x => x.Roles);
+            modelBuilder.Entity<ApplicationActionPermissionRole>().HasKey(x => new { RoleId = x.RoleId, PermissionId = x.PermissionId }).ToTable("ApplicationPermissionRoles");
 
             modelBuilder.Entity<ApplicationGroup>()
                 .HasMany<ApplicationUserGroup>((ApplicationGroup g) => g.ApplicationUsers)

@@ -102,7 +102,7 @@ namespace IdentitySample.Controllers
             {
                 return HttpNotFound();
             }
-            var groupRoles = this.ActionPermissionManager.GetControllerActionRoles(id);
+            var actionRoles = this.ActionPermissionManager.GetControllerActionRoles(id).ToList();
             // Get a list, not a DbSet or queryable:
             var allRoles = this.RoleManager.Roles.ToList();
 
@@ -114,13 +114,13 @@ namespace IdentitySample.Controllers
             };
 
             // load the roles/Roles for selection in the form:
-            foreach (var Role in allRoles)
+            foreach (var role in allRoles)
             {
                 var listItem = new SelectListItem()
                 {
-                    Text = Role.Name,
-                    Value = Role.Id,
-                    Selected = groupRoles.Any(g => g.Id == Role.Id)
+                    Text = role.Name,
+                    Value = role.Id,
+                    Selected = actionRoles.Any(g => g.Id == role.Id)
                 };
                 model.RolesList.Add(listItem);
             }
@@ -172,9 +172,9 @@ namespace IdentitySample.Controllers
             {
                 return HttpNotFound();
             }
-            var groupRoles = this.ActionPermissionManager.GetControllerActionRoles(id);
-            string[] RoleNames = groupRoles.Select(p => p.Name).ToArray();
-            ViewBag.RolesList = RoleNames;
+            var actionRoles = this.ActionPermissionManager.GetControllerActionRoles(id);
+            string[] roleNames = actionRoles.Select(p => p.Name).ToArray();
+            ViewBag.RolesList = roleNames;
 
             return View(applicationpermission);
         }

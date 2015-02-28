@@ -39,25 +39,18 @@ namespace IdentitySample.Models
             }
         }
 
-        public IQueryable<ApplicationActionPermissionRole> ActionPermissionsRole
-        {
-            get
-            {
-                return _db.ApplicationActionPermissionRoles;
-            }
-        }
-
         public IdentityResult AddPermissionRoles(int actionId, params string[] roles)
         {
             ThrowIfDisposed();
             var actionPermission = _actionPermissionStore.GetById(actionId);
+
             ClearActionRoles(actionId);
 
             var newRoles = _roleManager.Roles.Where(r => roles.Any(n => n == r.Name));
 
             foreach (var role in newRoles)
             {
-                _db.ApplicationActionPermissionRoles.Add(new ApplicationActionPermissionRole { ActionPermissionId = actionId, RoleId = role.Id });
+                actionPermission.Roles.Add(role);
             }
             _db.SaveChanges();
             var key = string.Format("{0}/{1}", actionPermission.ControllerName, actionPermission.ActionName);
@@ -75,7 +68,7 @@ namespace IdentitySample.Models
 
             foreach (var role in newRoles)
             {
-                _db.ApplicationActionPermissionRoles.Add(new ApplicationActionPermissionRole { ActionPermissionId = actionId, RoleId = role.Id });
+                actionPermission.Roles.Add(role);
             }
             await _db.SaveChangesAsync();
             var key = string.Format("{0}/{1}", actionPermission.ControllerName, actionPermission.ActionName);
@@ -145,12 +138,9 @@ namespace IdentitySample.Models
 
         public IEnumerable<ApplicationRole> GetControllerActionRoles(int actionId)
         {
-            var perm = _db.ApplicationActionPermissionRoles.Where(x => x.ActionPermissionId == actionId).ToList();
-            var roles = _roleManager.Roles.ToList();
-            var permRoles = from r in roles
-                            where perm.Any(ap => ap.RoleId == r.Id)
-                            select r;
-            return permRoles;
+            var perm = GetById(actionId);
+
+            return perm.Roles;
         }
 
         public IEnumerable<ApplicationRole> GetControllerActionRoles()
@@ -161,16 +151,6 @@ namespace IdentitySample.Models
                             where perm.Any(ap => ap.RoleId == r.Id)
                             select r;
             return permRoles;
-        }
-
-        public List<ApplicationActionPermission> GetPermissionRoles()
-        {
-            var result = _db.ApplicationActionPermissions.ToList();
-            result.ForEach(p =>
-            {
-                p.Roles = _db.ApplicationActionPermissionRoles.Where(x => x.ActionPermissionId == p.Id).ToList();
-            });
-            return result;
         }
 
         public bool UpdateActionPermission(ApplicationActionPermission permission)
@@ -236,8 +216,8 @@ namespace IdentitySample.Models
 
         private void ClearActionRoles(int actionId)
         {
-            _db.ApplicationActionPermissionRoles.Where(x => x.ActionPermissionId == actionId).ToList().
-                  ForEach(x => _db.ApplicationActionPermissionRoles.Remove(x));
+            var actionPermission = _actionPermissionStore.GetById(actionId);
+            actionPermission.Roles.Clear();
             _db.SaveChanges();
         }
 
