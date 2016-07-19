@@ -47,19 +47,19 @@ namespace IdentitySample.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ControllerName,ActionName")] ApplicationActionPermission applicationgroup, params string[] selectedRoles)
+        public async Task<ActionResult> Create([Bind(Include = "ControllerName,ActionName")] ApplicationActionPermission applicationpermission, params string[] selectedRoles)
         {
             if (ModelState.IsValid)
             {
                 selectedRoles = selectedRoles ?? new string[] { };
-                var result = await ActionPermissionManager.CreateActionPermissionAsync(applicationgroup);
+                var result = await ActionPermissionManager.CreateActionPermissionAsync(applicationpermission);
                 if (result)
-                    await ActionPermissionManager.AddPermissionRolesAsync(applicationgroup.Id, selectedRoles);
+                    await ActionPermissionManager.AddPermissionRolesAsync(applicationpermission.Id, selectedRoles);
                 return RedirectToAction("Index");
             }
             ViewBag.RolesList = new SelectList(
                   this.RoleManager.Roles.ToList(), "Id", "Name");
-            return View(applicationgroup);
+            return View(applicationpermission);
         }
 
         [PermissionFilter]

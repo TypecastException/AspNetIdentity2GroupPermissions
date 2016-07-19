@@ -65,6 +65,8 @@ namespace IdentitySample.Models
             ClearActionRoles(actionId);
 
             var newRoles = _roleManager.Roles.Where(r => roles.Any(n => n == r.Name));
+            if(actionPermission.Roles == null)
+                actionPermission.Roles = new List<ApplicationRole>();
 
             foreach (var role in newRoles)
             {
@@ -83,7 +85,7 @@ namespace IdentitySample.Models
                 throw new ArgumentNullException("permission");
 
             if (!_actionPermissionStore.EntitySet.Any(x => x.ActionName == permission.ActionName && x.ControllerName == permission.ControllerName))
-                _actionPermissionStore.CreateAsync(permission);
+                _actionPermissionStore.Create(permission);
             return true;
         }
 
@@ -205,7 +207,7 @@ namespace IdentitySample.Models
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && this._db != null)
+            if (disposing && _db != null)
             {
                 this._db.Dispose();
             }
@@ -217,8 +219,11 @@ namespace IdentitySample.Models
         private void ClearActionRoles(int actionId)
         {
             var actionPermission = _actionPermissionStore.GetById(actionId);
-            actionPermission.Roles.Clear();
-            _db.SaveChanges();
+            if (actionPermission.Roles != null)
+            {
+                actionPermission.Roles.Clear();
+                _db.SaveChanges();
+            }
         }
 
         private void ThrowIfDisposed()
