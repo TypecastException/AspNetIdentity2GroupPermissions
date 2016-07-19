@@ -5,6 +5,8 @@ This project expands upon the work done by the ASP.NET Identity Team in the Iden
 
 In this project, we make extensive addtions to the original Identity Samples project. We start with the easily extensible project template found at [AspNet Identity 2.0 Extensible Project Template](https://github.com/TypecastException/AspNet-Identity-2-Extensible-Project-Template) and add the capability to organize granular Role permissions into Groups, to which Users can then be assigned. 
 
+Update : Added the ability to authorize controller actions based on Roles, check [PermissionFilter] class to see how this works.
+
 There is a lot of room for improvment in this project. Particularly with respect to the design of Views and presentation. Do feel free to add to the issues list and/or hit me with a Pull Request if you have ideas or some code to add. 
 
 For more information on ASP.NET Identity, see:

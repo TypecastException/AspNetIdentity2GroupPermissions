@@ -1,4 +1,4 @@
-﻿@model IdentitySample.Models.ApplicationGroup
+﻿@model IdentitySample.Models.ApplicationActionPermission
 
 @{
     ViewBag.Title = "Create";
@@ -11,32 +11,24 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>ApplicationGroup</h4>
+        <h4>ApplicationActionPermission</h4>
         <hr />
-        @Html.ValidationSummary(true)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ActionName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)
+                @Html.EditorFor(model => model.ActionName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ActionName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Admin Group ?", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ControllerName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.CheckBoxFor(model => model.IsAdmin)
+                @Html.EditorFor(model => model.ControllerName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ControllerName, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description)
-                @Html.ValidationMessageFor(model => model.Description)
-            </div>
-        </div>
-
         <div class="form-group">
             <label class="col-md-2 control-label">
                 Select Group Roles
@@ -51,7 +43,6 @@
                 }
             </div>
         </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />

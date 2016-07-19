@@ -1,0 +1,33 @@
+﻿@model IEnumerable<IdentitySample.Models.ActionViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>Controller Name</th>
+        <th>No. of actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Controller
+            </td>
+            <td>
+                @item.Actions
+            </td>
+            <td>
+
+                @Html.ActionLink("Details", "Details", new { controllerName = item.Controller })
+            </td>
+        </tr>
+    }
+</table>

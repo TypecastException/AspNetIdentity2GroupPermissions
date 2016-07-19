@@ -1,0 +1,48 @@
+﻿@model IdentitySample.Models.ApplicationActionPermission
+
+@{
+    ViewBag.Title = "Permissions";
+}
+
+<h2>Controller Action Permissions</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ControllerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ControllerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActionName)
+        </dd>
+    </dl>
+</div>
+<h4>List of permissions granted this action</h4>
+
+<table class="table">
+
+    @foreach (var item in ViewBag.RolesList)
+    {
+        <tr>
+            <td>
+                @item
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+    @Html.ActionLink("Back to List", "Index")
+</p>

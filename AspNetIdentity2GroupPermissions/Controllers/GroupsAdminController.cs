@@ -15,6 +15,7 @@ namespace IdentitySample.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         private ApplicationGroupManager _groupManager;
+
         public ApplicationGroupManager GroupManager
         {
             get
@@ -28,6 +29,7 @@ namespace IdentitySample.Controllers
         }
 
         private ApplicationRoleManager _roleManager;
+
         public ApplicationRoleManager RoleManager
         {
             get
@@ -41,12 +43,11 @@ namespace IdentitySample.Controllers
             }
         }
 
-
+        [PermissionFilter]
         public ActionResult Index()
         {
             return View(this.GroupManager.Groups.ToList());
         }
-
 
         public async Task<ActionResult> Details(string id)
         {
@@ -67,7 +68,6 @@ namespace IdentitySample.Controllers
             return View(applicationgroup);
         }
 
-
         public ActionResult Create()
         {
             //Get a SelectList of Roles to choose from in the View:
@@ -75,7 +75,6 @@ namespace IdentitySample.Controllers
                 this.RoleManager.Roles.ToList(), "Id", "Name");
             return View();
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -102,7 +101,6 @@ namespace IdentitySample.Controllers
             return View(applicationgroup);
         }
 
-
         public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
@@ -123,7 +121,8 @@ namespace IdentitySample.Controllers
             {
                 Id = applicationgroup.Id,
                 Name = applicationgroup.Name,
-                Description = applicationgroup.Description
+                Description = applicationgroup.Description,
+                IsAdmin = applicationgroup.IsAdmin
             };
 
             // load the roles/Roles for selection in the form:
@@ -140,11 +139,10 @@ namespace IdentitySample.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(
-            [Bind(Include = "Id,Name,Description")] GroupViewModel model, params string[] selectedRoles)
+            [Bind(Include = "Id,Name,Description,IsAdmin")] GroupViewModel model, params string[] selectedRoles)
         {
             var group = await this.GroupManager.FindByIdAsync(model.Id);
             if (group == null)
@@ -164,7 +162,6 @@ namespace IdentitySample.Controllers
             return View(model);
         }
 
-
         public async Task<ActionResult> Delete(string id)
         {
             if (id == null)
@@ -179,7 +176,6 @@ namespace IdentitySample.Controllers
             return View(applicationgroup);
         }
 
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
@@ -192,7 +188,6 @@ namespace IdentitySample.Controllers
             await this.GroupManager.DeleteGroupAsync(id);
             return RedirectToAction("Index");
         }
-
 
         protected override void Dispose(bool disposing)
         {

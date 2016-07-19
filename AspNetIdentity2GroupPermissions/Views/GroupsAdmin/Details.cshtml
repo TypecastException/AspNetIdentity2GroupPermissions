@@ -8,7 +8,7 @@
 
 <div>
     <h4>ApplicationGroup</h4>
-	<hr />
+    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -25,7 +25,13 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
+        <dt>
+            Admin Group
+        </dt>
+        <dd>
 
+            @(Model.IsAdmin ? Html.Raw("Yes") : Html.Raw("No"))
+        </dd>
     </dl>
 </div>
 
