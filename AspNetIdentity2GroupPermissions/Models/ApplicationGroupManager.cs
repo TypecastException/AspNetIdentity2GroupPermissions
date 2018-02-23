@@ -300,7 +300,6 @@ namespace IdentitySample.Models
 
         public async Task<IEnumerable<ApplicationGroup>> GetUserGroupsAsync(string userId)
         {
-            var result = new List<ApplicationGroup>();
             var userGroups = (from g in this.Groups
                               where g.ApplicationUsers.Any(u => u.ApplicationUserId == userId)
                               select g).ToListAsync();
@@ -310,7 +309,6 @@ namespace IdentitySample.Models
 
         public IEnumerable<ApplicationGroup> GetUserGroups(string userId)
         {
-            var result = new List<ApplicationGroup>();
             var userGroups = (from g in this.Groups
                               where g.ApplicationUsers.Any(u => u.ApplicationUserId == userId)
                               select g).ToList();
